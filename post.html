@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #a855f7;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-bg: rgba(255,255,255,0.9);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --card-bg: rgba(30,41,59,0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: white !important;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .post-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .post-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .post-title {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Updated Engagement Section */
+        .engagement-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Enhanced Like Button */
+        .like-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(45deg, #6366f1, #a855f7);
+            color: white !important;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .like-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.6s;
+        }
+
+        .like-btn:hover::before {
+            left: 100%;
+        }
+
+        .like-btn.liked {
+            background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+
+        .like-btn i {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .like-btn.liked i {
+            transform: scale(1.3);
+        }
+
+        /* Modern Share Buttons */
+        .share-buttons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .share-btn {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #6366f1, #a855f7);
+            color: white;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .share-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: 0.3s;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(99,102,241,0.3);
+        }
+
+        .share-btn:hover::after {
+            transform: translateX(100%);
+        }
+
+        .share-btn i {
+            font-size: 1.4rem;
+        }
+
+        /* Modern Comments Section */
+        .comments-section {
+            margin-top: 3rem;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comment-form {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 1.5rem;
+            border: 2px solid rgba(99,102,241,0.2);
+            border-radius: 12px;
+            background: rgba(99,102,241,0.05);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s;
+            min-height: 100px;
+        }
+
+        .comment-input:focus {
+            border-color: var(--primary-color);
+            background: rgba(99,102,241,0.08);
+            box-shadow: 0 0 20px rgba(99,102,241,0.1);
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comment-item {
+            padding: 1.5rem;
+            background: rgba(99,102,241,0.05);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .comment-item:hover {
+            transform: translateX(10px);
+        }
+
+        .comment-author {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .comment-author::before {
+            content: "\F4E1";
+            font-family: "bootstrap-icons";
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .post-container {
+                padding: 1.5rem;
+            }
+            
+            .post-title {
+                font-size: 1.8rem;
+            }
+            
+            .engagement-section {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        <i class="bi bi-arrow-left"></i> Back to Blog
+    </a>
+
+    <div class="post-container" id="postContainer">
+        <div class="post-header">
+            <h1 class="post-title" id="postTitle"></h1>
+            <div class="post-meta">
+                <span id="postDate"></span>
+                <span id="postViews"></span>
+            </div>
+        </div>
+
+        <div class="post-content" id="postContent"></div>
+
+        <div class="engagement-section">
+            <button class="like-btn" id="likeButton" onclick="toggleLike()">
+                <i class="bi bi-hand-thumbs-up"></i>
+                <span id="likeCount">0</span>
+            </button>
+
+            <div class="share-buttons">
+                <button class="share-btn" onclick="shareOnFacebook()">
+                    <i class="bi bi-facebook"></i>
+                </button>
+                <button class="share-btn" onclick="shareOnTwitter()">
+                    <i class="bi bi-twitter"></i>
+                </button>
+                <button class="share-btn" onclick="shareOnWhatsApp()">
+                    <i class="bi bi-whatsapp"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h3>Comments (<span id="commentCount">0</span>)</h3>
+            
+            <form class="comment-form" id="commentForm">
+                <textarea class="comment-input" id="commentInput" 
+                    placeholder="Write your comment..." required></textarea>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-send"></i> Post Comment
+                </button>
+            </form>
+
+            <div class="comment-list" id="commentsList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Get Post ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // Load Post Content
+        function loadPost() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const post = posts[postId];
+
+            if(post) {
+                document.getElementById('postTitle').textContent = post.title;
+                document.getElementById('postDate').textContent = post.date;
+                document.getElementById('postContent').innerHTML = post.content;
+                
+                // Update views
+                updateViews();
+            } else {
+                document.getElementById('postContainer').innerHTML = `
+                    <h2>Post Not Found</h2>
+                    <p>The requested post could not be found.</p>
+                `;
+            }
+        }
+
+        // Like Functionality
+        function toggleLike() {
+            const likes = JSON.parse(localStorage.getItem('likes')) || {};
+            likes[postId] = !likes[postId];
+            localStorage.setItem('likes', JSON.stringify(likes));
+            updateLikeUI();
+        }
+
+        function updateLikeUI() {
+            const likes = JSON.parse(localStorage.getItem('likes')) || {};
+            const likeButton = document.getElementById('likeButton');
+            const likeCount = document.getElementById('likeCount');
+            
+            if(likes[postId]) {
+                likeButton.classList.add('liked');
+                likeCount.textContent = '1';
+            } else {
+                likeButton.classList.remove('liked');
+                likeCount.textContent = '0';
+            }
+        }
+
+        // Comment Functionality
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const commentText = document.getElementById('commentInput').value.trim();
+            
+            if(commentText) {
+                const comments = JSON.parse(localStorage.getItem('comments')) || {};
+                if(!comments[postId]) comments[postId] = [];
+                
+                comments[postId].push({
+                    text: commentText,
+                    date: new Date().toLocaleString(),
+                    author: 'Anonymous'
+                });
+                
+                localStorage.setItem('comments', JSON.stringify(comments));
+                loadComments();
+                document.getElementById('commentInput').value = '';
+            }
+        });
+
+        function loadComments() {
+            const comments = JSON.parse(localStorage.getItem('comments')) || {};
+            const postComments = comments[postId] || [];
+            
+            document.getElementById('commentCount').textContent = postComments.length;
+            document.getElementById('commentsList').innerHTML = postComments
+                .map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-author">${comment.author}</div>
+                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-date">${comment.date}</div>
+                    </div>
+                `).join('');
+        }
+
+        // Share Functions
+        function shareOnFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`);
+        }
+
+        function shareOnTwitter() {
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(document.title)}&url=${encodeURIComponent(window.location.href)}`);
+        }
+
+        function shareOnWhatsApp() {
+            window.open(`https://wa.me/?text=${encodeURIComponent(`${document.title} - ${window.location.href}`)}`);
+        }
+
+        // View Counter
+        function updateViews() {
+            const views = JSON.parse(localStorage.getItem('views')) || {};
+            views[postId] = (views[postId] || 0) + 1;
+            localStorage.setItem('views', JSON.stringify(views));
+            document.getElementById('postViews').textContent = `${views[postId]} Views`;
+        }
+
+        // Theme Sync
+        const savedTheme = localStorage.getItem('theme');
+        if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPost();
+            updateLikeUI();
+            loadComments();
+        });
+
+        // Theme Transition
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.3s';
+            document.body.style.opacity = '1';
+        }, 100);
+    </script>
+</body>
+</html>
